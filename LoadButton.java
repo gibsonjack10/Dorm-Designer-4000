@@ -1,5 +1,4 @@
 import java.io.File;
-//import java.io.PrintWriter;
 import java.util.Scanner;
 import java.io.FileNotFoundException;
 
@@ -40,11 +39,27 @@ public class LoadButton {
 	public Furniture mouseDown(Furniture furniture[]) throws FileNotFoundException {
 		try {
 			if (isMouseOver()) {
-				f = new File("RoomData.ddd");
+				f = new File("RoomData3.ddd");
 				Scanner scan = new Scanner(f);
-				String[] finalLines = new String[4];
-				while(scan.hasNextLine()) {
-//					finalLines[i] = scan.nextLine().trim().split(":")[1].split(",")[i];
+				String finalLines = new String();
+				int i = 0;
+				while(scan.hasNextLine() && i < 6) {
+					finalLines = scan.nextLine();
+					String trimLine = finalLines.trim();
+					String furnType = trimLine.split(":")[0];
+					String numbers = trimLine.split(":")[1];
+					String xPos = numbers.split(",")[0];
+					String yPos = numbers.split(",")[1];
+					String rotations = numbers.split(",")[2];
+					System.out.println(furnType + numbers);
+					furniture[i] = null;
+					
+					furniture[i] = new Furniture(furnType, Float.parseFloat(xPos), Float.parseFloat(yPos),
+							Integer.parseInt(rotations), processing);
+					i++;
+					
+//					return furniture[i-1];
+					
 					//System.out.println(scan.nextLine());
 					//finalLines = scan.nextLine();
 				}
@@ -56,9 +71,10 @@ public class LoadButton {
 				return null;
 			}
 		} catch (Exception e) {
-			System.out.println("This file does not exist");
+			
 		}
 		return null;
+
 	}
 
 	public boolean isMouseOver() {
