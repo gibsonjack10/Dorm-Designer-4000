@@ -108,7 +108,7 @@ public class LoadButton {
 				return null;
 			}
 		} catch (Exception e) {
-			
+			System.out.println("WARNING: Could not load room contents from file RoomData.ddd");
 		}
 		return null;
 	}
