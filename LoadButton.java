@@ -61,7 +61,7 @@ public class LoadButton {
 	public Furniture mouseDown(Furniture furniture[]) throws FileNotFoundException {
 		try { // looks to make sure we are loading the correct file
 			if (isMouseOver()) {
-				f = new File("ReadData.ddd");
+				f = new File("RoomData.ddd");
 				Scanner scan = new Scanner(f);
 				String finalLines = new String();
 				int i = 0;
