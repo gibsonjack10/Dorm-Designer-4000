@@ -33,32 +33,44 @@ public class LoadButton {
 	public Furniture mouseDown(Furniture furniture[]) throws FileNotFoundException {
 		try {
 			if (isMouseOver()) {
-				f = new File("RoomData.ddd");
+				f = new File("Untitled.txt");
 				Scanner scan = new Scanner(f);
 				String finalLines = new String();
 				int i = 0;
+				int lineCounter = 0;
 				for (int j=0; j<6; j++)
 					furniture[j] = null;
 				while(scan.hasNextLine()) {
-					if (i == 6) {
+					lineCounter++;
+					if (i > 5) {
 						System.out.println("WARNING: Unable to load more furniture.");
 						break;
 					}
 					finalLines = scan.nextLine();
-					String trimLine = finalLines.trim();
-					String furnType = trimLine.split(":")[0];
-					g = new File(furnType + ".png");
-					System.out.println(g);
-					if (g.exists()) {
-						System.out.println("WARNING: Could not find an image for a furniture object of type: " + furnType);
+					while (finalLines.isEmpty()) {
 						finalLines = scan.nextLine();
+						lineCounter++;
 					}
-					String numbers = trimLine.split(":")[1];
-					String xPos = numbers.split(",")[0];
-					String yPos = numbers.split(",")[1];
-					String rotations = numbers.split(",")[2];
-					furniture[i] = new Furniture(furnType, Float.parseFloat(xPos), Float.parseFloat(yPos), Integer.parseInt(rotations), processing);
-					i++;
+					
+					try {
+						String trimLine = finalLines.trim();
+						String furnType = trimLine.split(":")[0].trim();
+						g = new File("images/" + furnType + ".png");
+						String numbers = trimLine.split(":")[1];
+						String xPos = numbers.split(",")[0];
+						String yPos = numbers.split(",")[1];
+						String rotations = numbers.split(",")[2];
+						if (!g.isFile()) {
+							System.out.println("WARNING: Could not find an image for a furniture object of type: " + furnType.trim());
+							continue;
+						}
+						
+						furniture[i] = new Furniture(furnType.trim(), Float.parseFloat(xPos.trim()), 
+								Float.parseFloat(yPos.trim()), Integer.parseInt(rotations.trim()), processing);
+						i++;
+					} catch (Exception e) {
+						System.out.println("WARNING: Found incorrectly formatted line in file: " + lineCounter);
+					}
 				}
 				scan.close();
 			} else {
